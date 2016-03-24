@@ -1,11 +1,28 @@
+#!/usr/bin/python3
+# Author: Ash-Ishh..
+# <mr.akc@outlook.com>
+# Modules Required:
+# requests
+# pip install requests
+# beautifulSoup4: https://pypi.python.org/pypi/beautifulsoup4/4.3.2
+# pip install BeautifulSoup4
+
+
 import requests
 from bs4 import BeautifulSoup
 import re
 import sys,os
 import webbrowser
+#import sl4a
+
+
+try:
+    os.system("color 0A")
+except:
+    pass
 
 options = "* Enter the Token Number to download.\n* Enter 'N' to navigate to another page\n* Enter 'S' to change torrent site. \n* Enter 'Yo' to search Another Torrent\n* Enter 'Q' to exit.\n>> "
- 
+#droid = sl4a.Android()
  
 def start():
     global query
@@ -44,34 +61,30 @@ def start1337x(query0,pageNo):
         div1 = soup.find_all('div',{'class':'coll-1'})
         #Div1 contains Title And Magnet Link in it
         
-        title = [t.get_text() for t in div1]
+        titles = [t.get_text() for t in div1]
         links = [k['href'] for i in div1 for j in i.find_all('strong') for k in j.find_all('a')]
         #Links are in <div1> --> <strong> --> <a href='..'>
         
         seeders = [s.get_text() for s in soup.find_all('div',{'class':'coll-2'})]
         leechers = [l.get_text() for l in soup.find_all('div',{'class':'coll-3'})]
-        size = [size.get_text() for size in soup.find_all('div',{'class':'coll-4'})]        
+        sizes = [size.get_text() for size in soup.find_all('div',{'class':'coll-4'})]        
         # seederd are in <div class=coll-2>
         # leechers are in <div class=coll-2>
         # size is in <div class=coll-2>
 
-        if len(title) == 0:
+        if len(titles) == 0:
             print("No Result Found :(\nTry Again!\n")
             start()
    
         print("Page Number : ",str(pageNo))
-        for i in range(len(title)):
-            print('\n')
-            print("x."*30)
-            tmp = title[i].encode(sys.stdout.encoding,errors='replace')
-            #encoding is used because it will give 'charmap' error in case it doesnt recognise alphabate
-            titleFinal = (str(tmp).replace("b'",'\n')).replace('\\n','')
-            print("Token Number : "+str(i+1))
-            print(titleFinal)
-            print("Seeders : "+seeders[i])
-            print("Leechers : "+leechers[i])
-            print("Size :"+size[i])
-            print(("x."*30)+('\n'))
+        for i,(title,seeder,leecher,size) in enumerate(zip(titles,seeders,leechers,sizes)):          
+            print('\n'+ "x."*30)         
+            print("Token Number : " + str(i+1))
+            print( (title.encode('ascii','replace')).decode())
+            print("Seeders : " + seeder)
+            print("Leechers : " + leecher)
+            print("Size :" + size)
+            print("x."*30 + '\n')
     
 
         action = input(options).upper()
@@ -103,7 +116,7 @@ def start1337x(query0,pageNo):
             dwnldSoup = BeautifulSoup(dwnldReq.content,'html.parser')
             magnet = [i['href'] for i in dwnldSoup.find_all('a',{'class':'magnet'})]
             webbrowser.open(magnet[0])
-               
+            #droid.setClipboard(magnet[0])     
             
             newAction = input("\n\n* Successfully Added to your Downloads.(Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
             if newAction == 'YO':
@@ -111,8 +124,7 @@ def start1337x(query0,pageNo):
             elif newAction == 'Q':
                  sys.exit() 
             else:
-                 start()
-                         
+                 start()                   
             	                   
     except Exception as e:
         print("Error! !_!")
@@ -120,9 +132,7 @@ def start1337x(query0,pageNo):
         print("Try Again..")
         start()
         
-        
-        
-        
+                     
         
         
 ### kat.cr ###    
@@ -139,27 +149,24 @@ def startKat(query0,pageNo):
 
         magnetRegex = re.compile(r"'magnet': '(magnet:\?.*?)'",re.DOTALL)
         magnet = magnetRegex.findall(str(soup.prettify))
-      
-        title = [ti.get_text() for ti in soup.find_all('a', {'class':'cellMainLink'})]
+        titles = [ti.get_text() for ti in soup.find_all('a', {'class':'cellMainLink'})]
         centerClass = [s.get_text() for s in soup.find_all('td', {'class':'center'})]
-        size = [t.get_text() for t in soup.find_all('td', {'class':'nobr'}) ]
+        sizes = [t.get_text() for t in soup.find_all('td', {'class':'nobr'}) ]
         seeders = centerClass[3::5]
         leechers = centerClass[4::5]
         
+        if len(titles) == 0:
+            print("No Result Found :(\nTry Again!\n")
+            start()
         
         print("Page Number : ",str(pageNo))
-        for i in range(len(title)):
-            print('\n')
-            print("x."*30)
-            tmp = title[i].encode(sys.stdout.encoding,errors='replace')
-            #encoding is used because it will give 'charmap' error in case it doesnt recognise alphabate
-            titleFinal = (str(tmp).replace("b'",'\n')).replace('\\n','')
+        for i,(title,size,seeder,leecher) in enumerate(zip(titles,sizes,seeders,leechers)):
             print("Token Number : "+str(i+1))
-            print(titleFinal)
-            print("Seeders : "+seeders[i])
-            print("Leechers : "+leechers[i])
-            print("Size :"+size[i])
-            print(("x."*30)+('\n'))
+            print(title.encode("ascii","ignore").decode())
+            print("Seeders : " + seeder )
+            print("Leechers : " + leecher)
+            print("Size :"+ size)
+            print("x."*30+'\n')
         
 
         action = input(options).upper()
@@ -186,7 +193,7 @@ def startKat(query0,pageNo):
                print("Enter Vaild Option!!!!")
                startKat(query0,pageNo)
             webbrowser.open(magnet[0])
-               
+            #droid.setClipboard(magnet[action])       
                   
             newAction = input("\n\n* Successfully Added to your Downloads :) (Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
             if newAction == 'YO':
@@ -195,8 +202,7 @@ def startKat(query0,pageNo):
                  sys.exit() 
             else:
                  start()
-                      
-
+                     
 
       	                   
     except Exception as e:
