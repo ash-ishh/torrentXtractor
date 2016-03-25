@@ -15,14 +15,17 @@ import sys,os
 import webbrowser
 #import sl4a
 
-print("$ torrentXtractor $\n\n")
-
 try:
     os.system("color 0A")
 except:
     pass
+   
+   
+print("torrentXtractor V2.0".center(50, '-'))
+print("\n\nRequirments : You need to install torrent client (e.g : uTorrent , BitTorrent etc) If it is already installed you are good to go.\n\n")
 
-options = "* Enter the Token Number to download.\n* Enter 'N' to navigate to another page\n* Enter 'S' to change torrent site. \n* Enter 'Yo' to search Another Torrent\n* Enter 'Q' to exit.\n>> "
+
+options = "* Enter the Token Number to download.\n* Enter 'N' to navigate to another page.\n* Enter 'S' to change torrent site. \n* Enter 'Yo' to search Another Torrent.\n* Enter 'Q' to exit.\n>> "
 #droid = sl4a.Android()
  
 def printAvailableTorrents(functionPageNo,functionTitles,functionSeeders,functionLeechers,functionSizes):
@@ -47,7 +50,7 @@ def performAction(functionActionVar):
 
 
 def performNewAction():
-    newAction = input("\n\n* Successfully Added to your Downloads.(Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
+    newAction = input("\n\n* Successfully Added to your Downloads :) (Check out your torrent client)\n\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
     if newAction == 'YO':
         start()
     elif newAction == 'Q':
@@ -183,7 +186,7 @@ def startKat(query0,pageNo):
                print('\n'*30)
                print("Enter Vaild Option!!!!")
                startKat(query0,pageNo)
-            webbrowser.open(magnet[0])
+            webbrowser.open(magnet[action-1])
             #droid.setClipboard(magnet[action])       
          
             performNewAction()
