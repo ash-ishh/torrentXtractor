@@ -15,6 +15,7 @@ import sys,os
 import webbrowser
 #import sl4a
 
+print("$ torrentXtractor $\n\n")
 
 try:
     os.system("color 0A")
@@ -24,6 +25,37 @@ except:
 options = "* Enter the Token Number to download.\n* Enter 'N' to navigate to another page\n* Enter 'S' to change torrent site. \n* Enter 'Yo' to search Another Torrent\n* Enter 'Q' to exit.\n>> "
 #droid = sl4a.Android()
  
+def printAvailableTorrents(functionPageNo,functionTitles,functionSeeders,functionLeechers,functionSizes):
+    print("Page Number : ",str(functionPageNo))
+    for i,(title,seeder,leecher,size) in enumerate(zip(functionTitles,functionSeeders,functionLeechers,functionSizes)):          
+        print('\n'+ "x."*30)         
+        print("Token Number : " + str(i+1))
+        print( (title.encode('ascii','replace')).decode())
+        print("Seeders : " + seeder)
+        print("Leechers : " + leecher)
+        print("Size :" + size)
+        print("x."*30 + '\n')
+   
+def performAction(functionActionVar):
+    if functionActionVar == 'Q': #quit
+        sys.exit()        
+    elif functionActionVar == 'S':
+        selectService()    
+    elif functionActionVar == 'YO': #take new query
+        print('\n'*30)
+        start()
+
+
+def performNewAction():
+    newAction = input("\n\n* Successfully Added to your Downloads.(Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
+    if newAction == 'YO':
+        start()
+    elif newAction == 'Q':
+         sys.exit() 
+    else:
+         start()                   
+            	         
+
 def start():
     global query
     query = input("Enter Your Query :\n>> ")
@@ -39,7 +71,6 @@ def selectService():
     else:
         print(".\n.\n.\nEnter Vaild Option :(\n")
         selectService()
-
 
 
 
@@ -75,33 +106,15 @@ def start1337x(query0,pageNo):
         if len(titles) == 0:
             print("No Result Found :(\nTry Again!\n")
             start()
-   
-        print("Page Number : ",str(pageNo))
-        for i,(title,seeder,leecher,size) in enumerate(zip(titles,seeders,leechers,sizes)):          
-            print('\n'+ "x."*30)         
-            print("Token Number : " + str(i+1))
-            print( (title.encode('ascii','replace')).decode())
-            print("Seeders : " + seeder)
-            print("Leechers : " + leecher)
-            print("Size :" + size)
-            print("x."*30 + '\n')
-    
-
-        action = input(options).upper()
-        if action == 'Q': #quit
-            sys.exit()
-       
-        elif action == 'N': #navigate
+  
+        printAvailableTorrents(pageNo,titles,seeders,leechers,sizes)   
+        action = input(options).upper()     
+        performAction(action)
+        
+        if action == 'N': #navigate
             pageNo = input("Enter Page Number: \n>> ")
             print('\n'*30)
-            start1337x(query0,pageNo)
-            
-        elif action == 'S':
-            selectService()
-     
-        elif action == 'YO': #take new query
-            print('\n'*30)
-            start()
+            start1337x(query0,pageNo)                        
         
         else: #download part
             try:
@@ -117,15 +130,8 @@ def start1337x(query0,pageNo):
             magnet = [i['href'] for i in dwnldSoup.find_all('a',{'class':'magnet'})]
             webbrowser.open(magnet[0])
             #droid.setClipboard(magnet[0])     
-            
-            newAction = input("\n\n* Successfully Added to your Downloads.(Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
-            if newAction == 'YO':
-                start()
-            elif newAction == 'Q':
-                 sys.exit() 
-            else:
-                 start()                   
-            	                   
+           
+            performNewAction()          
     except Exception as e:
         print("Error! !_!")
         print(str(e))
@@ -159,31 +165,16 @@ def startKat(query0,pageNo):
             print("No Result Found :(\nTry Again!\n")
             start()
         
-        print("Page Number : ",str(pageNo))
-        for i,(title,size,seeder,leecher) in enumerate(zip(titles,sizes,seeders,leechers)):
-            print("Token Number : "+str(i+1))
-            print(title.encode("ascii","ignore").decode())
-            print("Seeders : " + seeder )
-            print("Leechers : " + leecher)
-            print("Size :"+ size)
-            print("x."*30+'\n')
-        
+        printAvailableTorrents(pageNo,titles,seeders,leechers,sizes)
 
         action = input(options).upper()
-        if action == 'Q': #quit
-            sys.exit()
+     
+        performAction(action)
        
-        elif action == 'N': #navigate
+        if action == 'N': #navigate
             pageNo = input("Enter Page Number: \n>> ")
             print('\n'*30)
-            startKat(query,pageNo)
-            
-        elif action == 'S':
-            selectService()
-     
-        elif action == 'YO': #take new query
-            print('\n'*30)
-            start()
+            startKat(query,pageNo)           
         
         else: #download part
             try:
@@ -194,17 +185,9 @@ def startKat(query0,pageNo):
                startKat(query0,pageNo)
             webbrowser.open(magnet[0])
             #droid.setClipboard(magnet[action])       
-                  
-            newAction = input("\n\n* Successfully Added to your Downloads :) (Check out your torrent client)\n* To Search Another Torrent Enter 'Yo'.\n* To quit enter 'Q'.\n\n>> ").upper()
-            if newAction == 'YO':
-                start()
-            elif newAction == 'Q':
-                 sys.exit() 
-            else:
-                 start()
-                     
-
-      	                   
+         
+            performNewAction()
+     
     except Exception as e:
         print("Error! !_!")
         print(str(e))
