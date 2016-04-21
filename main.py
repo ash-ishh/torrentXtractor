@@ -43,7 +43,8 @@ def performAction(functionActionVar):
     if functionActionVar == 'Q': #quit
         sys.exit()        
     elif functionActionVar == 'S':
-        selectService()    
+        selectService()
+        print('\n'*30)   
     elif functionActionVar == 'YO': #take new query
         print('\n'*30)
         start()
