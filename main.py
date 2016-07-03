@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # Author: Ash-Ishh..
 # <mr.akc@outlook.com>
 # Modules Required:
@@ -15,11 +15,6 @@ import sys,os
 import webbrowser
 #import sl4a
 
-try:
-    os.system("color 0A")
-except:
-    pass
-   
    
 print("torrentXtractor V2.0".center(50, '-'))
 print("\n\nRequirments : You need to install torrent client (e.g : uTorrent , BitTorrent etc) If it is already installed you are good to go.\n\n")
@@ -55,9 +50,9 @@ def performNewAction():
     if newAction == 'YO':
         start()
     elif newAction == 'Q':
-         sys.exit() 
+        sys.exit() 
     else:
-         start()                   
+        start()                   
             	         
 
 def start():
@@ -82,7 +77,7 @@ def selectService():
 #### 1337x ####
 def start1337x(query0,pageNo):
     print("1337x\n")
-    url = 'http://1337x.to'
+    url = 'http://1337x.proxybit.co'
     query0 = query0.replace(' ','+').lower()
     finalUrl = url + '/search/' + query0 + '/'+str(pageNo)+'/'
     #if query = game of thrones
@@ -148,14 +143,14 @@ def start1337x(query0,pageNo):
 ### kat.cr ###    
 def startKat(query0,pageNo):
     print("KICK-ASS-T0RRENTS\n")
-    url = 'http://kat.cr/usearch/' 
+    url = "https://kickassto.co/usearch/" 
    # query0 = query0.replace(' ','%20')
     finalUrl = url + query0 + '/' + str(pageNo) + '/'
 
-    
     try:
         req = requests.get(finalUrl)
         soup = BeautifulSoup(req.content,"html.parser")
+
 
         magnetRegex = re.compile(r"'magnet': '(magnet:\?.*?)'",re.DOTALL)
         magnet = magnetRegex.findall(str(soup.prettify))
@@ -165,6 +160,7 @@ def startKat(query0,pageNo):
         seeders = centerClass[3::5]
         leechers = centerClass[4::5]
         
+
         if len(titles) == 0:
             print("No Result Found :(\nTry Again!\n")
             start()
